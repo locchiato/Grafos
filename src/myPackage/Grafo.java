@@ -17,7 +17,7 @@ public abstract class Grafo {
 	protected int gradoMax;
 	protected int gradoMin;
 
-	protected int colorMax = 1;
+	protected int colorMax;
 	protected ArrayList<Nodo> nodos;
 	protected int[] nodosColoreados; // el indice coincide con el numero de nodo,
 									// y el valor que guarda es el color

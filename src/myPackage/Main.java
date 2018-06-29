@@ -7,15 +7,13 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 
 		/*
-		GrafoNPGenerator.aleatorioConProbabilidad(10, 0.5);
 		GrafoNPGenerator.aleatorioConPorcentajeAdyacencia(60, 0.5);
 		GrafoNPGenerator.regularConGrado(30, 5);
 		GrafoNPGenerator.regularConPorcentajeAdyacencia(40, 0.5);
 		GrafoNPGenerator.nPartito(60, 35);
+		*/
 		
-		GrafoPGenerator.aleatorioConProbabilidad(5, 0.5, 60);
-		 */
-/*
+		/*
 		GrafoPGenerator.aleatorioConPorcentajeAdyacencia(60, 0.5, 50);
 		GrafoPGenerator.regularConGrado(30, 5, 70);
 		GrafoPGenerator.regularConPorcentajeAdyacencia(40, 0.5, 30);
@@ -46,11 +44,11 @@ public class Main {
 		else
 			System.out.println("MAL COLOREADO");
 		
-		https://www.youtube.com/watch?v=fgdCNuGPJnw
-		 */
+		
 		GrafoNDP grafo = new GrafoNDP("grafo.in");
 		Dijkstra dijkstra = new Dijkstra(grafo, 0);
 		dijkstra.ejecutar();
+		 */
 		
 		/*
 		GrafoNDP grafo = new GrafoNDP("grafo.in");

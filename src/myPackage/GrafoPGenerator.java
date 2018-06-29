@@ -13,18 +13,13 @@ public class GrafoPGenerator {
 		ArrayList<AristaPonderada> array = new ArrayList<AristaPonderada>();
 		Random rand = new Random();
 		int cantMaximaAristas = ((cantNodos * (cantNodos - 1)) / 2);
-		int cantAristas = 0;
-		for (int i = 0; i < cantNodos - 1; i++) {
-			for (int j = i + 1; j < cantNodos; j++) {
-				if (rand.nextFloat() < probabilidad) {
-					if (i < j)
+		
+		for (int i = 0; i < cantNodos - 1; i++)
+			for (int j = i + 1; j < cantNodos; j++)
+				if (rand.nextFloat() < probabilidad) 
 						array.add(new AristaPonderada(i, j, (int) (rand.nextFloat() * pesoLimite + 1)));
-					else
-						array.add(new AristaPonderada(j, i, (int) (rand.nextFloat() * pesoLimite + 1)));
-					cantAristas++;
-				}
-			}
-		}
+		
+		int cantAristas = array.size();
 
 		Arista grados = calcularGrado(array, cantNodos);
 		double porcentajeAdyacencia = (double) cantAristas / cantMaximaAristas;
@@ -34,47 +29,41 @@ public class GrafoPGenerator {
 				grados.getNodo2());
 	}
 
-	public static void aleatorioConPorcentajeAdyacencia(int cantNodos, double porcentaje, int pesoLimite)
+	public static void aleatorioConPorcentajeAdyacencia(int cantNodos, double porcentajeAdyacencia, int pesoLimite)
 			throws IOException {
 		ArrayList<AristaPonderada> array = new ArrayList<AristaPonderada>();
 		ArrayList<RandomParDeNodos> random = new ArrayList<RandomParDeNodos>();
 		Random rand = new Random();
 		int cantMaximaAristas = ((cantNodos * (cantNodos - 1)) / 2);
-		int cantAristas = 0;
-		for (int i = 0; i < cantNodos - 1; i++) {
-			for (int j = i + 1; j < cantNodos; j++) {
-				if (i < j)
-					random.add(new RandomParDeNodos(new AristaPonderada(i, j, (int) (rand.nextFloat() * pesoLimite + 1)), rand.nextDouble()));
-				else
-					random.add(new RandomParDeNodos(new AristaPonderada(j, i, (int) (rand.nextFloat() * pesoLimite + 1)), rand.nextDouble()));
-
-			}
-		}
+		
+		for (int i = 0; i < cantNodos - 1; i++)
+			for (int j = i + 1; j < cantNodos; j++) 
+				random.add(new RandomParDeNodos(new AristaPonderada(i, j, (int) (rand.nextFloat() * pesoLimite + 1)), rand.nextDouble()));
+			
+		int cantAristas = array.size();
 
 		Collections.sort(random);
 
-		for (int i = 0; i < cantMaximaAristas * porcentaje; i++) {
+		for (int i = 0; i < cantMaximaAristas * porcentajeAdyacencia; i++) {
 			array.add(random.get(i).getNodos());
 			cantAristas++;
 		}
 
 		Arista grados = calcularGrado(array, cantNodos);
-		String path = "ALEATORIO_PTAJE_" + cantNodos + "_" + String.format("%.2f", porcentaje) + "_PONDERADO.txt";
+		String path = "ALEATORIO_PTAJE_" + cantNodos + "_" + String.format("%.2f", porcentajeAdyacencia) + "_PONDERADO.txt";
 
-		escribirGrafoEnArchivo(path, array, cantNodos, cantAristas, porcentaje, grados.getNodo1(), grados.getNodo2());
+		escribirGrafoEnArchivo(path, array, cantNodos, cantAristas, porcentajeAdyacencia, grados.getNodo1(), grados.getNodo2());
 	}
 
 	public static void regularConGrado(int cantNodos, int grado, int pesoLimite) throws IOException {
 		ArrayList<AristaPonderada> array = new ArrayList<AristaPonderada>();
 		Random rand = new Random();
+		int tam, des;
 		int cantAristas = 0;
 		int gradoActual = 2;
 		int cantMaximaAristas = (cantNodos * (cantNodos - 1)) / 2;
 		int salto = 0;
 		int j = 0;
-
-		int nodo1;
-		int nodo2;
 
 		if (grado % 2 != 0 && cantNodos % 2 != 0) {
 			System.out.println("No se puede generar un grafo regular de grado impar con N impar");
@@ -84,40 +73,23 @@ public class GrafoPGenerator {
 			System.out.println("El grado no puede ser igual, o mayor a la cantidad de nodos");
 			return;
 		}
-
+		
 		if (grado % 2 != 0) { // si el grado es impar, genero la cruz
-			for (int i = 0; i < cantNodos / 2; i++) {
-				nodo1 = i;
-				nodo2 = i + cantNodos / 2;
-				if (nodo1 < nodo2)
-					array.add(new AristaPonderada(nodo1, nodo2, (int) (rand.nextFloat() * pesoLimite + 1)));
-				else
-					array.add(new AristaPonderada(nodo2, nodo1, (int) (rand.nextFloat() * pesoLimite + 1)));
-				cantAristas++;
-			}
+			tam = cantNodos / 2;
+			for (int i = 0; i < tam; i++)
+				array.add(new AristaPonderada(i, i+tam, (int) (rand.nextFloat() * pesoLimite + 1)));
+			cantAristas += tam;
 		}
 
 		if (grado > 1) {
-			while (gradoActual <= grado) {
+			while (gradoActual < grado) {
 				salto = gradoActual / 2;
 				j = 0;
 				for (int i = 0; i < cantNodos; i++) {
-					if (i + salto < cantNodos) {
-						nodo1 = i;
-						nodo2 = i + salto;
-						if (nodo1 < nodo2)
-							array.add(new AristaPonderada(nodo1, nodo2, (int) (rand.nextFloat() * pesoLimite + 1)));
-						else
-							array.add(new AristaPonderada(nodo2, nodo1, (int) (rand.nextFloat() * pesoLimite + 1)));
-					} else {
-						if (i < j)
-							array.add(new AristaPonderada(i, j, (int) (rand.nextFloat() * pesoLimite + 1)));
-						else
-							array.add(new AristaPonderada(j, i, (int) (rand.nextFloat() * pesoLimite + 1)));
-						j++;
-					}
-					cantAristas++;
+					des = (i + salto) < cantNodos ? i+salto : j++;
+					array.add(new AristaPonderada(i, des, (int) (rand.nextFloat() * pesoLimite + 1)));					
 				}
+				cantAristas += cantNodos;
 				gradoActual += 2;
 			}
 		}
