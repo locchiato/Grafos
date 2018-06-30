@@ -50,39 +50,40 @@ public class GrafoNDNP extends Grafo {
 	}
 
 	private void colorear() {
-		
 		int color = 1;
-		int nodo;
-		int indice;
-
+		int nodo, indice;
+		boolean pintado = false;
+		boolean sePuedePintar = true;
 		colorMax = 1;
 		for (int i = 0; i < cantNodos; i++)
 			nodosColoreados[i] = 0;
 
-		nodosColoreados[nodos.get(0).getNroNodo()] = color; // coloreo el
-															// primer
-															// nodo de
-															// la lista
-
-		for (int i = 1; i < cantNodos; i++) {
-			nodo = nodos.get(i).getNroNodo();
-			nodosColoreados[nodo] = color;
-			
-			for(int j = 0; j < cantNodos; j++) {
-				if (nodo != j) {
-					if (nodo < j)
-						indice = grafo.getIndice(nodo, j);
-					else
-						indice = grafo.getIndice(j, nodo);
-
-					if (grafo.hayArista(indice) && nodosColoreados[j] != color) {
-						if (color > colorMax)
-							colorMax = color;
+		nodosColoreados[nodos.get(0).getNroNodo()] = color; // coloreo el primer
+															// nodo de la lista
+		while (color == 1 || !pintado) {
+			for (int i = 1; i < cantNodos; i++) {
+				nodo = nodos.get(i).getNroNodo();
+				sePuedePintar = true;
+				if (nodosColoreados[nodo] == 0) {
+					for (int j = 0; j < cantNodos; j++)
+						if (nodo != j) {
+							if (nodo < j)
+								indice = grafo.getIndice(nodo, j);
+							else
+								indice = grafo.getIndice(j, nodo);
+							if (sePuedePintar && grafo.hayArista(indice))
+								sePuedePintar = nodosColoreados[j] != color;
+						}
+					if (sePuedePintar)
 						nodosColoreados[nodo] = color;
-					}
 				}
 			}
-			color = 1;
+			pintado = true;
+			for (int col : nodosColoreados)
+				if (col == 0)
+					pintado = false;
+			if (!pintado)
+				colorMax = ++color;
 		}
 	}
 

@@ -38,7 +38,8 @@ public class GrafoPGenerator {
 		
 		for (int i = 0; i < cantNodos - 1; i++)
 			for (int j = i + 1; j < cantNodos; j++) 
-				random.add(new RandomParDeNodos(new AristaPonderada(i, j, (int) (rand.nextFloat() * pesoLimite + 1)), rand.nextDouble()));
+				random.add(new RandomParDeNodos(new AristaPonderada(i, j, 
+						(int) (rand.nextFloat() * pesoLimite + 1)), rand.nextDouble()));
 			
 		int cantAristas = array.size();
 
@@ -191,8 +192,8 @@ public class GrafoPGenerator {
 		return new Arista(gradoMaximo, gradoMinimo);
 	}
 
-	private static void escribirGrafoEnArchivo(String path, ArrayList<AristaPonderada> array, int cantNodos, int cantAristas,
-			double porcentajeAdyacencia, int gradoMaximo, int gradoMinimo) throws IOException {
+	private static void escribirGrafoEnArchivo(String path, ArrayList<AristaPonderada> array, int cantNodos, 
+			int cantAristas, double porcentajeAdyacencia, int gradoMaximo, int gradoMinimo) throws IOException {
 		FileWriter file = new FileWriter(path);
 		BufferedWriter buffer = new BufferedWriter(file);
 		System.out.println();

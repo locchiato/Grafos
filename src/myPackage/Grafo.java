@@ -35,7 +35,6 @@ public abstract class Grafo {
 		ptajeAdyacencia = scan.nextDouble();
 		gradoMax = scan.nextInt();
 		gradoMin = scan.nextInt();
-		colorMax = 1;
 
 		nodos = new ArrayList<Nodo>();
 		mejorColor = cantNodos;
